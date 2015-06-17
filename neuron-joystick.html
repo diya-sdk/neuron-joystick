@@ -52,9 +52,13 @@
 						switch(neurons[i].attributes["role"].value){
 							case "speed":
 								this._speedNeuron = neurons[i];
+								neurons[i].autosend = true;
+								neurons[i].frequency = 15;
 								break;
 							case "angle":
 								this._angleNeuron = neurons[i];
+								neurons[i].autosend = true;
+								neurons[i].frequency = 15;
 								break;
 						}
 					}
@@ -69,8 +73,6 @@
 				this.y = 0;
 
 				this._frameRequested = false;
-
-
 			},
 
 			domReady: function(){

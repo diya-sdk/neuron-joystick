@@ -16,6 +16,6 @@
   ],
   "dependencies": {
     "d3": "~3.5.5",
-    "polymer": "Polymer/polymer#0.5"
+    "polymer": "Polymer/polymer"
   }
 }

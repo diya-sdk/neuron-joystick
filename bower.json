@@ -1,21 +1,22 @@
 {
-  "name": "neuron-joystick",
-  "version": "0.8.0",
-  "homepage": "https://github.com/partnering/neuron-joystick",
-  "authors": [
-    "Sylvain Mahe <sylv.mahe@gmail.com>"
-  ],
-  "main": "neuron-joystick.html",
-  "license": "LGPL v3",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
-  "dependencies": {
-    "d3": "~3.5.5",
-    "polymer": "Polymer/polymer"
-  }
+	"name": "neuron-video",
+	"version": "0.8.0",
+	"homepage": "https://github.com/partnering/neuron-joystick",
+	"description": "video streaming",
+	"authors": [
+		"Sylvain Mahe <sylv.mahe@gmail.com>"
+	],
+	"main": "neuron-joystick.html",
+	"license": "LGPL v3",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	"dependencies": {
+		"d3": "~3.5.5",
+		"polymer": "Polymer/polymer"
+	}
 }

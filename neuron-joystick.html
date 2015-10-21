@@ -53,7 +53,8 @@
 		properties: {
 			angle: { notify: true },
 			speed: { notify: true },
-			state: { value: 'disconnected', notify: true }
+			state: { value: 'disconnected', notify: true },
+			backwardSlowdown: { type:Number, notify: true }
 		},
 
 		attached: function () {
@@ -146,8 +147,11 @@
 			var y = this.y;
 			this.speed = Math.min(Math.max(y / -100, -1), 1);
 			this.angle = Math.min(Math.max((x + 100) / 200, 0), 1);
+
+			if(this.backwardSlowdown && this.speed<0) this.speed /= parseFloat(this.backwardSlowdown);
+
 			this.updateNeurons();
-	      	},
+	  },
 
 		updateDisplay: function () {
 		 	var that = this;

@@ -54,7 +54,8 @@
 			angle: { notify: true },
 			speed: { notify: true },
 			state: { value: 'disconnected', notify: true },
-			backwardSlowdown: { type:Number, notify: true }
+			backwardSlowdown: { type:Number, notify: true },
+			noBackward: { type:Boolean, notify: true }
 		},
 
 		attached: function () {
@@ -149,6 +150,7 @@
 			this.angle = Math.min(Math.max((x + 100) / 200, 0), 1);
 
 			if(this.backwardSlowdown && this.speed<0) this.speed /= parseFloat(this.backwardSlowdown);
+			if(this.noBackward && this.speed<0) this.speed = 0;
 
 			this.updateNeurons();
 	  },

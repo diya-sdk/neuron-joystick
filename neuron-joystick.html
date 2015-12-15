@@ -25,11 +25,7 @@
 		}
 
 		#map { background:transparent;}
-		#compassMagLine{
-			stroke: rgb(1, 145, 197);
-			stroke-width: 2;
-		}
-		#compassOdoLine{
+		.compassLine{
 			stroke: rgb(1, 145, 197);
 			stroke-width: 2;
 		}
@@ -43,18 +39,22 @@
 		<svg id="map" version="1.1" viewBox="-100 -100 200 200">
 			
 			<marker id="odoMarker" orient="auto" overflow="visible">
-				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;odometric</text>
+				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;odo</text>
 			</marker>
 			<marker id="magMarker" orient="auto" overflow="visible">
-				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;magnetic</text>
+				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mag</text>
+			</marker>
+			<marker id="mergedMarker" orient="auto" overflow="visible">
+				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m.m</text>
 			</marker>
 
 			<circle cx="0" cy="0" r="98" fill="white" stroke="black" stroke-width="1"></circle>
 			<rect width="0.5" height="196" x="0" y="-98" fill="gray"></rect>
 			<rect width="196" height="0.5" x="-98" y="1" fill="gray"></rect>
 
-			<line marker-start="url(#magMarker)" id="compassMagLine" x1="0" y1="0" x2$="{{computeMagneticCompassX(compass.*)}}" y2$="{{computeMagneticCompassY(compass.*)}}" />
-			<line marker-start="url(#odoMarker)" id="compassOdoLine" x1="0" y1="0" x2$="{{computeOdometricCompassX(compass.*)}}" y2$="{{computeOdometricCompassY(compass.*)}}" />
+			<line marker-start="url(#magMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMagneticCompassX(compass.*)}}" y2$="{{computeMagneticCompassY(compass.*)}}" />
+			<line marker-start="url(#odoMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeOdometricCompassX(compass.*)}}" y2$="{{computeOdometricCompassY(compass.*)}}" />
+			<line marker-start="url(#mergedMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMergedCompassX(compass.*)}}" y2$="{{computeMergedCompassY(compass.*)}}" />
 
 			<circle id="handle" cx="0" cy="0" r="20" fill="lightgray" stroke="gray" stroke-width="1"></circle>
 		</svg>
@@ -73,7 +73,7 @@
 		properties: {
 			angle: { notify: true },
 			speed: { notify: true },
-			compass: { value: function() { return { magnetic: -1, odometric: -1 } }, notify: true },
+			compass: { value: function() { return { magnetic: -1, odometric: -1, merged: -1 } }, notify: true },
 			state: { value: 'disconnected', notify: true },
 			backwardSlowdown: { type:Number, notify: true },
 			noBackward: { type:Boolean, notify: true }
@@ -209,21 +209,12 @@
 			return -98*Math.cos(angle);
 		},
 
-		computeMagneticCompassX: function(){
-			return this.computeCompassX(this.compass.magnetic);
-		},
-
-		computeMagneticCompassY: function(){
-			return this.computeCompassY(this.compass.magnetic);
-		},
-
-		computeOdometricCompassX: function(){
-			return this.computeCompassX(this.compass.odometric);
-		},
-
-		computeOdometricCompassY: function(){
-			return this.computeCompassY(this.compass.odometric);
-		},
+		computeMagneticCompassX: function(){ return this.computeCompassX(this.compass.magnetic); },
+		computeMagneticCompassY: function(){ return this.computeCompassY(this.compass.magnetic); },
+		computeOdometricCompassX: function(){ return this.computeCompassX(this.compass.odometric); },
+		computeOdometricCompassY: function(){ return this.computeCompassY(this.compass.odometric); },
+		computeMergedCompassX: function(){ return this.computeCompassX(this.compass.merged); },
+		computeMergedCompassY: function(){ return this.computeCompassY(this.compass.merged); },
 
 		updateDisplay: function () {
 		 	var that = this;
@@ -243,6 +234,7 @@
 			var neurons = evt.detail.values;
 			this.set('compass.magnetic', neurons[0]*2*Math.PI);
 			this.set('compass.odometric', neurons[1]*2*Math.PI);
+			this.set('compass.merged', neurons[2]*2*Math.PI);
 		},
 
 		updateState: function(){

@@ -73,7 +73,7 @@
 		properties: {
 			angle: { notify: true },
 			speed: { notify: true },
-			compass: { value: function() { return { magnetic: -1, odometric: -1, merged: -1 } }, notify: true },
+			compass: { value: function() { return { magnetic: -1, odometric: -1, merged: -1, force: 1 } }, notify: true },
 			state: { value: 'disconnected', notify: true },
 			backwardSlowdown: { type:Number, notify: true },
 			noBackward: { type:Boolean, notify: true }
@@ -199,22 +199,24 @@
 			this.updateNeurons();
 	  },
 
-		computeCompassX: function(angle) {
+		computeCompassX: function(angle, scale) {
+			if(scale === undefined) scale = 1;
 			if(angle === -1) return 0;
-			return 98*Math.sin(angle);
+			return scale*98*Math.sin(angle);
 		},
 
-		computeCompassY: function(angle) {
+		computeCompassY: function(angle, scale) {
+			if(scale === undefined) scale = 1;
 			if(angle === -1) return -98;
-			return -98*Math.cos(angle);
+			return scale*-98*Math.cos(angle);
 		},
 
 		computeMagneticCompassX: function(){ return this.computeCompassX(this.compass.magnetic); },
 		computeMagneticCompassY: function(){ return this.computeCompassY(this.compass.magnetic); },
 		computeOdometricCompassX: function(){ return this.computeCompassX(this.compass.odometric); },
 		computeOdometricCompassY: function(){ return this.computeCompassY(this.compass.odometric); },
-		computeMergedCompassX: function(){ return this.computeCompassX(this.compass.merged); },
-		computeMergedCompassY: function(){ return this.computeCompassY(this.compass.merged); },
+		computeMergedCompassX: function(){ return this.computeCompassX(this.compass.merged, this.compass.force); },
+		computeMergedCompassY: function(){ return this.computeCompassY(this.compass.merged, this.compass.force); },
 
 		updateDisplay: function () {
 		 	var that = this;
@@ -235,6 +237,7 @@
 			this.set('compass.magnetic', neurons[0]*2*Math.PI);
 			this.set('compass.odometric', neurons[1]*2*Math.PI);
 			this.set('compass.merged', neurons[2]*2*Math.PI);
+			this.set('compass.force', neurons[3]);
 		},
 
 		updateState: function(){

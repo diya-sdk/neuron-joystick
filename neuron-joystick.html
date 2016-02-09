@@ -30,23 +30,23 @@
 			stroke-width: 2;
 		}
 		.compassLegend{
-			font-size: 4.5;
+			font-size: 4.5px;
 		}
 
 	</style>
 	<template>
 		<div id="disconnectLayer" class$="{{state}}"></div>
 		<svg id="map" version="1.1" viewBox="-100 -100 200 200">
-			
-			<marker id="odoMarker" orient="auto" overflow="visible">
-				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;odo</text>
-			</marker>
-			<marker id="magMarker" orient="auto" overflow="visible">
-				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mag</text>
-			</marker>
-			<marker id="mergedMarker" orient="auto" overflow="visible">
-				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m.m</text>
-			</marker>
+		
+				<marker id="odoMarker" orient="auto" overflow="visible">
+					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;odo</text>
+				</marker>
+				<marker id="magMarker" orient="auto" overflow="visible">
+					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mag</text>
+				</marker>
+				<marker id="mergedMarker" orient="auto" overflow="visible">
+					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m.m</text>
+				</marker>
 
 			<circle cx="0" cy="0" r="98" fill="white" stroke="black" stroke-width="1"></circle>
 			<rect width="0.5" height="196" x="0" y="-98" fill="gray"></rect>
@@ -73,6 +73,7 @@
 		properties: {
 			angle: { notify: true },
 			speed: { notify: true },
+			nocompass: { type: Boolean, notify: true, value: false },
 			compass: { value: function() { return { magnetic: -1, odometric: -1, merged: -1, force: 1 } }, notify: true },
 			state: { value: 'disconnected', notify: true },
 			backwardSlowdown: { type:Number, notify: true },

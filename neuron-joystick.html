@@ -52,9 +52,9 @@
 			<rect width="0.5" height="196" x="0" y="-98" fill="gray"></rect>
 			<rect width="196" height="0.5" x="-98" y="1" fill="gray"></rect>
 
-			<line marker-start="url(#magMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMagneticCompassX(compass.*)}}" y2$="{{computeMagneticCompassY(compass.*)}}" />
-			<line marker-start="url(#odoMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeOdometricCompassX(compass.*)}}" y2$="{{computeOdometricCompassY(compass.*)}}" />
-			<line marker-start="url(#mergedMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMergedCompassX(compass.*)}}" y2$="{{computeMergedCompassY(compass.*)}}" />
+			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#magMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMagneticCompassX(compass.*)}}" y2$="{{computeMagneticCompassY(compass.*)}}" />
+			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#odoMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeOdometricCompassX(compass.*)}}" y2$="{{computeOdometricCompassY(compass.*)}}" />
+			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#mergedMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMergedCompassX(compass.*)}}" y2$="{{computeMergedCompassY(compass.*)}}" />
 
 			<circle id="handle" cx="0" cy="0" r="20" fill="lightgray" stroke="gray" stroke-width="1"></circle>
 		</svg>
@@ -73,7 +73,7 @@
 		properties: {
 			angle: { notify: true },
 			speed: { notify: true },
-			nocompass: { type: Boolean, notify: true, value: false },
+			nocompass: { type: Boolean, notify: false, value: false },
 			compass: { value: function() { return { magnetic: -1, odometric: -1, merged: -1, force: 1 } }, notify: true },
 			state: { value: 'disconnected', notify: true },
 			backwardSlowdown: { type:Number, notify: true },
@@ -245,6 +245,10 @@
 			this.state = (this._speedNeuron && this._speedNeuron.state === 'connected' &&
 			       	this._angleNeuron && this._angleNeuron.state === 'connected' &&
 				(!this._compassNeuron || this._compassNeuron.state === 'connected')) ? 'connected' : 'disconnected';
+		},
+
+		displayCompass: function(){
+			return this.nocompass ? 'display: none;' : '';
 		}
 
 	});

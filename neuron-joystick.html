@@ -44,6 +44,9 @@
 				<marker id="magMarker" orient="auto" overflow="visible">
 					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mag</text>
 				</marker>
+				<marker id="fmagMarker" orient="auto" overflow="visible">
+					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fmag</text>
+				</marker>
 				<marker id="mergedMarker" orient="auto" overflow="visible">
 					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m.m</text>
 				</marker>
@@ -53,6 +56,7 @@
 			<rect width="196" height="0.5" x="-98" y="1" fill="gray"></rect>
 
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#magMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMagneticCompassX(compass.*)}}" y2$="{{computeMagneticCompassY(compass.*)}}" />
+			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#fmagMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeFMagneticCompassX(compass.*)}}" y2$="{{computeFMagneticCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#odoMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeOdometricCompassX(compass.*)}}" y2$="{{computeOdometricCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#mergedMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMergedCompassX(compass.*)}}" y2$="{{computeMergedCompassY(compass.*)}}" />
 
@@ -74,7 +78,7 @@
 			angle: { notify: true },
 			speed: { notify: true },
 			nocompass: { type: Boolean, notify: false, value: false },
-			compass: { value: function() { return { magnetic: -1, odometric: -1, merged: -1, force: 1 } }, notify: true },
+			compass: { value: function() { return { mag: -1, odometric: -1, merged: -1, force: 1, fmag: -1 } }, notify: true },
 			state: { value: 'disconnected', notify: true },
 			backwardSlowdown: { type:Number, notify: true },
 			noBackward: { type:Boolean, notify: true }
@@ -212,8 +216,10 @@
 			return scale*-98*Math.cos(angle);
 		},
 
-		computeMagneticCompassX: function(){ return this.computeCompassX(this.compass.magnetic); },
-		computeMagneticCompassY: function(){ return this.computeCompassY(this.compass.magnetic); },
+		computeMagneticCompassX: function(){ return this.computeCompassX(this.compass.mag); },
+		computeMagneticCompassY: function(){ return this.computeCompassY(this.compass.mag); },
+		computeFMagneticCompassX: function(){ return this.computeCompassX(this.compass.fmag); },
+		computeFMagneticCompassY: function(){ return this.computeCompassY(this.compass.fmag); },
 		computeOdometricCompassX: function(){ return this.computeCompassX(this.compass.odometric); },
 		computeOdometricCompassY: function(){ return this.computeCompassY(this.compass.odometric); },
 		computeMergedCompassX: function(){ return this.computeCompassX(this.compass.merged, this.compass.force); },
@@ -235,10 +241,11 @@
 
 		updateCompass: function(evt) {
 			var neurons = evt.detail.values;
-			this.set('compass.magnetic', neurons[0]*2*Math.PI);
+			this.set('compass.fmag', neurons[0]*2*Math.PI);
 			this.set('compass.odometric', neurons[1]*2*Math.PI);
 			this.set('compass.merged', neurons[2]*2*Math.PI);
 			this.set('compass.force', neurons[3]);
+			this.set('compass.mag', neurons[4]*2*Math.PI);
 		},
 
 		updateState: function(){

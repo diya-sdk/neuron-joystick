@@ -46,6 +46,14 @@ indice -> corresponding neuron
 			stroke: rgb(1, 145, 197);
 			stroke-width: 2;
 		}
+		.compassLineRed{
+			stroke: rgb(153, 23, 10);
+			stroke-width: 2;
+		}
+		.compassLineGreen{
+			stroke: rgb(0, 128, 0);
+			stroke-width: 2;
+		}
 
 		#mapred { background:transparent;}
 		.visualcompassLine{
@@ -82,11 +90,11 @@ indice -> corresponding neuron
 			<rect width="0.5" height="196" x="0" y="-98" fill="gray"></rect>
 			<rect width="196" height="0.5" x="-98" y="1" fill="gray"></rect>
 
-			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#magMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMagneticCompassX(compass.*)}}" y2$="{{computeMagneticCompassY(compass.*)}}" />
-			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#fmagMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeFMagneticCompassX(compass.*)}}" y2$="{{computeFMagneticCompassY(compass.*)}}" />
-			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#odoMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeOdometricCompassX(compass.*)}}" y2$="{{computeOdometricCompassY(compass.*)}}" />
+			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#magMarker)" class="compassLineRed" x1="0" y1="0" x2$="{{computeMagneticCompassX(compass.*)}}" y2$="{{computeMagneticCompassY(compass.*)}}" />
+			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#fmagMarker)" class="compassLineRed" x1="0" y1="0" x2$="{{computeFMagneticCompassX(compass.*)}}" y2$="{{computeFMagneticCompassY(compass.*)}}" />
+			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#odoMarker)" class="compassLineGreen" x1="0" y1="0" x2$="{{computeOdometricCompassX(compass.*)}}" y2$="{{computeOdometricCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#mergedMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMergedCompassX(compass.*)}}" y2$="{{computeMergedCompassY(compass.*)}}" />
-			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#visualMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeVisualCompassX(compass.*)}}" y2$="{{computeVisualCompassY(compass.*)}}" />
+			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#visualMarker)" class="compassLineGreen" x1="0" y1="0" x2$="{{computeVisualCompassX(compass.*)}}" y2$="{{computeVisualCompassY(compass.*)}}" />
 
 			<circle id="handle" cx="0" cy="0" r="20" fill="lightgray" stroke="gray" stroke-width="1"></circle>
 		</svg>

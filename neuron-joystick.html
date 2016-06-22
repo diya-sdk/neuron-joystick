@@ -1,6 +1,23 @@
 <link rel="import" href="../polymer/polymer.html">
 <script type="text/javascript" src="../d3/d3.min.js"></script>
 
+<!--
+
+This component receives an array of PROMETHE neurons and uses it to create visual compass.
+Neurons's tab is defined like that :
+indice -> corresponding neuron
+0 -> mag
+1 -> odo
+2 -> fmag
+3 -> forceFmag (NEW neuron)
+4 -> mm (merged in code)
+5 -> mmForce (force in code)
+6 -> error
+7 -> visual
+8 -> forceVisual
+
+-->
+
 <dom-module id="neuron-joystick">
 	<style>
 		:host{
@@ -257,7 +274,7 @@
 			this.set('compass.mag', neurons[0]*2*Math.PI);
 			this.set('compass.odometric', neurons[1]*2*Math.PI);
 			this.set('compass.fmag', neurons[2]*2*Math.PI);
-			this.set('compass.forceFmag', neurons[3]);//NEW
+			this.set('compass.forceFmag', neurons[3]);
 			this.set('compass.merged', neurons[4]*2*Math.PI);
 			this.set('compass.force', neurons[5]);
 			this.set('compass.visual', neurons[7]*2*Math.PI);

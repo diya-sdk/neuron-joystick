@@ -29,13 +29,13 @@
 			stroke: rgb(1, 145, 197);
 			stroke-width: 2;
 		}
-		
+
 		#mapred { background:transparent;}
 		.visualcompassLine{
 			stroke: crimson;
 			stroke-width: 2;
 		}
-		
+
 		.compassLegend{
 			font-size: 4.5px;
 		}
@@ -44,7 +44,7 @@
 	<template>
 		<div id="disconnectLayer" class$="{{state}}"></div>
 		<svg id="map" version="1.1" viewBox="-100 -100 200 200">
-		
+
 				<marker id="odoMarker" orient="auto" overflow="visible">
 					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;odo</text>
 				</marker>
@@ -89,7 +89,7 @@
 			angle: { notify: true },
 			speed: { notify: true },
 			nocompass: { type: Boolean, notify: false, value: false },
-			compass: { value: function() { return { mag: -1, odometric: -1, merged: -1, force: 1, fmag: -1, visual: -1, forceVisual: -1 } }, notify: true },
+			compass: { value: function() { return { mag: -1, odometric: -1, merged: -1, force: 1, fmag: -1, forceFmag: -1, visual: -1, forceVisual: -1 } }, notify: true },
 			state: { value: 'disconnected', notify: true },
 			backwardSlowdown: { type:Number, notify: true },
 			noBackward: { type:Boolean, notify: true }
@@ -129,7 +129,7 @@
 
 			this._speedNeuron.addEventListener('state-changed',this.updateState.bind(this));
 			this._angleNeuron.addEventListener('state-changed',this.updateState.bind(this));
-			if(this._compassNeuron) { 
+			if(this._compassNeuron) {
 				this._compassNeuron.addEventListener('state-changed', this.updateState.bind(this));
 				this._compassNeuron.addEventListener('value', this.updateCompass.bind(this));
 			}
@@ -229,8 +229,8 @@
 
 		computeMagneticCompassX: function(){ return this.computeCompassX(this.compass.mag); },
 		computeMagneticCompassY: function(){ return this.computeCompassY(this.compass.mag); },
-		computeFMagneticCompassX: function(){ return this.computeCompassX(this.compass.fmag); },
-		computeFMagneticCompassY: function(){ return this.computeCompassY(this.compass.fmag); },
+		computeFMagneticCompassX: function(){ return this.computeCompassX(this.compass.fmag, this.compass.forceFmag); },
+		computeFMagneticCompassY: function(){ return this.computeCompassY(this.compass.fmag, this.compass.forceFmag); },
 		computeOdometricCompassX: function(){ return this.computeCompassX(this.compass.odometric); },
 		computeOdometricCompassY: function(){ return this.computeCompassY(this.compass.odometric); },
 		computeMergedCompassX: function(){ return this.computeCompassX(this.compass.merged, this.compass.force); },
@@ -254,13 +254,15 @@
 
 		updateCompass: function(evt) {
 			var neurons = evt.detail.values;
-			this.set('compass.fmag', neurons[0]*2*Math.PI);
+			this.set('compass.mag', neurons[0]*2*Math.PI);
 			this.set('compass.odometric', neurons[1]*2*Math.PI);
-			this.set('compass.merged', neurons[2]*2*Math.PI);
-			this.set('compass.force', neurons[3]);
-			this.set('compass.mag', neurons[4]*2*Math.PI);
-			this.set('compass.forceVisual', neurons[5]);
-			this.set('compass.visual', neurons[6]*2*Math.PI);
+			this.set('compass.fmag', neurons[2]*2*Math.PI);
+			this.set('compass.forceFmag', neurons[3]);//NEW
+			this.set('compass.merged', neurons[4]*2*Math.PI);
+			this.set('compass.force', neurons[5]);
+			this.set('compass.visual', neurons[7]*2*Math.PI);
+			this.set('compass.forceVisual', neurons[8]);
+
 		},
 
 		updateState: function(){

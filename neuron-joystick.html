@@ -178,7 +178,7 @@ indice -> corresponding neuron
 			this._frameRequested = false;
 			this._then = Date.now();
 			this._now;
-			this._fps = 60;
+			this._fps = 30;
 			this._interval = 1000/this._fps;
 			this.initJoystick();
 			this.redraw();
@@ -203,7 +203,6 @@ indice -> corresponding neuron
 			this.x = Math.min(Math.max(x, -100), 100);
 			this.y = Math.min(Math.max(y, -100), 100);
 			this._frameRequested = true;
-			this.computeAction();
 	   	},
 
 		redraw: function(){
@@ -218,6 +217,7 @@ indice -> corresponding neuron
 			if(this._frameRequested && delta > this._interval){
 				this._then = this._now - (delta % this._interval);
 				this.updateDisplay();
+				this.computeAction();
 				this._frameRequested = false;
 			}
 		},

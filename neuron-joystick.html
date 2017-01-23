@@ -81,18 +81,21 @@ indice -> corresponding neuron
 					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m.m</text>
 				</marker>
 				<marker id="visualMarker" orient="auto" overflow="visible">
-					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viz</text>
+					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viz</text>
 				</marker>
 
+			<path id="visualcompass" fill="rgba(1,145,197,0.5)"></path>
 			<circle cx="0" cy="0" r="98" fill="white" fill-opacity="0" stroke="black" stroke-width="1"></circle>
 			<rect width="0.5" height="196" x="0" y="-98" fill="gray"></rect>
 			<rect width="196" height="0.5" x="-98" y="1" fill="gray"></rect>
+
 
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#magMarker)" class="compassLineRed" x1="0" y1="0" x2$="{{computeMagneticCompassX(compass.*)}}" y2$="{{computeMagneticCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#fmagMarker)" class="compassLineRed" x1="0" y1="0" x2$="{{computeFMagneticCompassX(compass.*)}}" y2$="{{computeFMagneticCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#odoMarker)" class="compassLineGreen" x1="0" y1="0" x2$="{{computeOdometricCompassX(compass.*)}}" y2$="{{computeOdometricCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#mergedMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMergedCompassX(compass.*)}}" y2$="{{computeMergedCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#visualMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeVisualCompassX(compass.*)}}" y2$="{{computeVisualCompassY(compass.*)}}" />
+
 
 			<circle id="handle" cx="0" cy="0" r="20" fill="lightgray" stroke="gray" stroke-width="1"></circle>
 		</svg>
@@ -144,6 +147,9 @@ indice -> corresponding neuron
 						case 'compass':
 							this._compassNeuron = neurons[i];
 							break;
+						case 'visualcompass':
+							this._visualCompassNeuron = neurons[i];
+							break;
 					}
 				}
 			}
@@ -156,6 +162,12 @@ indice -> corresponding neuron
 				this._compassNeuron.addEventListener('state-changed', this.updateState.bind(this));
 				this._compassNeuron.addEventListener('value', this.updateCompass.bind(this));
 			}
+
+			if (this._visualCompassNeuron) {
+				this._visualCompassNeuron.addEventListener('state-changed', this.updateState.bind(this));
+				this._visualCompassNeuron.addEventListener('value', this.updateVisualCompass.bind(this));
+			}
+
 
 			document.addEventListener("keydown", function(e){
 				if(e.keyCode === 37) that.angle = -1;
@@ -285,6 +297,18 @@ indice -> corresponding neuron
 			this.set('compass.force', neurons[5]);
 			this.set('compass.visual', neurons[6]*2*Math.PI);
 			this.set('compass.forceVisual', neurons[7]);
+		},
+
+		updateVisualCompass: function(evt) {
+			var neuronValues = evt.detail.values;
+			var radialFunc = d3.svg.area.radial()
+						.angle(function (d,i) { return 2*Math.PI / neuronValues.length * i })
+						.startAngle(0)
+						.radius(function(d) { return d*100 })
+						.interpolate("cardinal-closed");
+
+			var svgContainer = d3.select(this.$.map);
+			svgContainer.select("#visualcompass").attr("d", radialFunc(neuronValues))
 		},
 
 		updateState: function(){

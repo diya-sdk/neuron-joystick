@@ -80,6 +80,9 @@ indice -> corresponding neuron
 				<marker id="mergedMarker" orient="auto" overflow="visible">
 					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m.m</text>
 				</marker>
+				<marker id="visualMarker" orient="auto" overflow="visible">
+					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viz</text>
+				</marker>
 
 			<circle cx="0" cy="0" r="98" fill="white" fill-opacity="0" stroke="black" stroke-width="1"></circle>
 			<rect width="0.5" height="196" x="0" y="-98" fill="gray"></rect>
@@ -89,6 +92,7 @@ indice -> corresponding neuron
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#fmagMarker)" class="compassLineRed" x1="0" y1="0" x2$="{{computeFMagneticCompassX(compass.*)}}" y2$="{{computeFMagneticCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#odoMarker)" class="compassLineGreen" x1="0" y1="0" x2$="{{computeOdometricCompassX(compass.*)}}" y2$="{{computeOdometricCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#mergedMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMergedCompassX(compass.*)}}" y2$="{{computeMergedCompassY(compass.*)}}" />
+			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#visualMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeVisualCompassX(compass.*)}}" y2$="{{computeVisualCompassY(compass.*)}}" />
 
 			<circle id="handle" cx="0" cy="0" r="20" fill="lightgray" stroke="gray" stroke-width="1"></circle>
 		</svg>
@@ -108,7 +112,7 @@ indice -> corresponding neuron
 			angle: { notify: true },
 			speed: { notify: true },
 			nocompass: { type: Boolean, notify: false, value: false },
-			compass: { value: function() { return { mag: -1, odometric: -1, merged: -1, force: 1, fmag: -1, forceFmag: -1 } }, notify: true },
+			compass: { value: function() { return { mag: -1, odometric: -1, merged: -1, force: 1, fmag: -1, forceFmag: -1, visual: -1, forceVisual: -1 } }, notify: true },
 			state: { value: 'disconnected', notify: true },
 			backwardSlowdown: { type:Number, notify: true },
 			noBackward: { type:Boolean, notify: true }
@@ -254,6 +258,8 @@ indice -> corresponding neuron
 		computeOdometricCompassY: function(){ return this.computeCompassY(this.compass.odometric); },
 		computeMergedCompassX: function(){ return this.computeCompassX(this.compass.merged, this.compass.force); },
 		computeMergedCompassY: function(){ return this.computeCompassY(this.compass.merged, this.compass.force); },
+		computeVisualCompassX: function(){ return this.computeCompassX(this.compass.visual, this.compass.forceVisual); },
+		computeVisualCompassY: function(){ return this.computeCompassY(this.compass.visual, this.compass.forceVisual); },
 
 		updateDisplay: function () {
 		 	var that = this;
@@ -277,7 +283,8 @@ indice -> corresponding neuron
 			this.set('compass.forceFmag', neurons[3]);
 			this.set('compass.merged', neurons[4]*2*Math.PI);
 			this.set('compass.force', neurons[5]);
-
+			this.set('compass.visual', neurons[6]*2*Math.PI);
+			this.set('compass.forceVisual', neurons[7]);
 		},
 
 		updateState: function(){

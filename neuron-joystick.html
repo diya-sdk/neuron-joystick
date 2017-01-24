@@ -53,6 +53,11 @@ indice -> corresponding neuron
 			stroke-width: 2;
 		}
 
+		.compassLinePurple {
+			stroke: rgb(247, 0, 255);
+			stroke-width: 2;
+		}
+
 		#mapred { background:transparent;}
 		.visualcompassLine{
 			stroke: crimson;
@@ -84,7 +89,7 @@ indice -> corresponding neuron
 					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viz</text>
 				</marker>
 
-			<path id="visualcompass" fill="rgba(1,145,197,0.5)"></path>
+			<path id="visualcompass" fill="rgba(247,0,255,0.5)"></path>
 			<circle cx="0" cy="0" r="98" fill="white" fill-opacity="0" stroke="black" stroke-width="1"></circle>
 			<rect width="0.5" height="196" x="0" y="-98" fill="gray"></rect>
 			<rect width="196" height="0.5" x="-98" y="1" fill="gray"></rect>
@@ -94,7 +99,7 @@ indice -> corresponding neuron
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#fmagMarker)" class="compassLineRed" x1="0" y1="0" x2$="{{computeFMagneticCompassX(compass.*)}}" y2$="{{computeFMagneticCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#odoMarker)" class="compassLineGreen" x1="0" y1="0" x2$="{{computeOdometricCompassX(compass.*)}}" y2$="{{computeOdometricCompassY(compass.*)}}" />
 			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#mergedMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeMergedCompassX(compass.*)}}" y2$="{{computeMergedCompassY(compass.*)}}" />
-			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#visualMarker)" class="compassLine" x1="0" y1="0" x2$="{{computeVisualCompassX(compass.*)}}" y2$="{{computeVisualCompassY(compass.*)}}" />
+			<line style$="{{displayCompass(nocompass)}}" marker-start="url(#visualMarker)" class="compassLinePurple" x1="0" y1="0" x2$="{{computeVisualCompassX(compass.*)}}" y2$="{{computeVisualCompassY(compass.*)}}" />
 
 
 			<circle id="handle" cx="0" cy="0" r="20" fill="lightgray" stroke="gray" stroke-width="1"></circle>

@@ -108,7 +108,7 @@ indice -> corresponding neuron
 
 
 		<div id="neurons">
-			<content id="content"></content>
+			<slot id="content"></slot>
 		</div>
 
 	</template>
@@ -132,12 +132,7 @@ indice -> corresponding neuron
 			//01ffff
 			this.state = 'disconnected';
 
-			var neurons = null;
-			var neuronsShadow = this.$.content.getDistributedNodes();
-			var neuronsShady = this.$.neurons.children;
-
-			if(neuronsShadow.length > 0) neurons = neuronsShadow;
-			else neurons = neuronsShady;
+			var neurons = Polymer.dom(this.$.content).getDistributedNodes()
 
 			for (var i = 0; i < neurons.length; i++) {
 				if (neurons[i].attributes && neurons[i].attributes['role']) {

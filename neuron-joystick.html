@@ -17,77 +17,78 @@ indice -> corresponding neuron
 -->
 
 <dom-module id="neuron-joystick">
-	<style>
-		:host{
-			display: block;
-			position: relative;
-		}
-
-		:host #disconnectLayer {
-			position: absolute;
-			width: 100%;
-			height: 100%;
-			top: 0;
-			left: 0;
-			display: block;
-			color: gray;
-			border-radius: 100%;
-			background: rgba(150, 150, 150, 0.33);
-		}
-
-		:host #disconnectLayer.connected {
-			display: none;
-		}
-
-		#map { background:transparent;}
-		.compassLine{
-			stroke: rgb(1, 145, 197);
-			stroke-width: 2;
-		}
-		.compassLineRed{
-			stroke: rgb(153, 23, 10);
-			stroke-width: 2;
-		}
-		.compassLineGreen{
-			stroke: rgb(0, 128, 0);
-			stroke-width: 2;
-		}
-
-		.compassLinePurple {
-			stroke: rgb(247, 0, 255);
-			stroke-width: 2;
-		}
-
-		#mapred { background:transparent;}
-		.visualcompassLine{
-			stroke: crimson;
-			stroke-width: 2;
-		}
-
-		.compassLegend{
-			font-size: 4.5px;
-		}
-
-	</style>
 	<template>
+		<style>
+			:host{
+				display: block;
+				position: relative;
+			}
+
+			:host #disconnectLayer {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				display: block;
+				color: gray;
+				border-radius: 100%;
+				background: rgba(150, 150, 150, 0.33);
+			}
+
+			:host #disconnectLayer.connected {
+				display: none;
+			}
+
+			#map { background:transparent;}
+			.compassLine{
+				stroke: rgb(1, 145, 197);
+				stroke-width: 2;
+			}
+			.compassLineRed{
+				stroke: rgb(153, 23, 10);
+				stroke-width: 2;
+			}
+			.compassLineGreen{
+				stroke: rgb(0, 128, 0);
+				stroke-width: 2;
+			}
+
+			.compassLinePurple {
+				stroke: rgb(247, 0, 255);
+				stroke-width: 2;
+			}
+
+			#mapred { background:transparent;}
+			.visualcompassLine{
+				stroke: crimson;
+				stroke-width: 2;
+			}
+
+			.compassLegend{
+				font-size: 4.5px;
+			}
+
+		</style>
+
 		<div id="disconnectLayer" class$="{{state}}"></div>
 		<svg id="map" version="1.1" viewBox="-100 -100 200 200">
 
-				<marker id="odoMarker" orient="auto" overflow="visible">
-					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;odo</text>
-				</marker>
-				<marker id="magMarker" orient="auto" overflow="visible">
-					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mag</text>
-				</marker>
-				<marker id="fmagMarker" orient="auto" overflow="visible">
-					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fmag</text>
-				</marker>
-				<marker id="mergedMarker" orient="auto" overflow="visible">
-					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m.m</text>
-				</marker>
-				<marker id="visualMarker" orient="auto" overflow="visible">
-					<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viz</text>
-				</marker>
+			<marker id="odoMarker" orient="auto" overflow="visible">
+				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;odo</text>
+			</marker>
+			<marker id="magMarker" orient="auto" overflow="visible">
+				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mag</text>
+			</marker>
+			<marker id="fmagMarker" orient="auto" overflow="visible">
+				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fmag</text>
+			</marker>
+			<marker id="mergedMarker" orient="auto" overflow="visible">
+				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m.m</text>
+			</marker>
+			<marker id="visualMarker" orient="auto" overflow="visible">
+				<text class="compassLegend">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;viz</text>
+			</marker>
 
 			<path id="visualcompass" fill="rgba(247,0,255,0.5)"></path>
 			<circle cx="0" cy="0" r="98" fill="white" fill-opacity="0" stroke="black" stroke-width="1"></circle>
@@ -128,7 +129,7 @@ indice -> corresponding neuron
 
 		attached: function () {
 
-//01ffff
+			//01ffff
 			this.state = 'disconnected';
 
 			var neurons = null;
@@ -141,7 +142,7 @@ indice -> corresponding neuron
 			for (var i = 0; i < neurons.length; i++) {
 				if (neurons[i].attributes && neurons[i].attributes['role']) {
 					switch (neurons[i].attributes['role'].value) {
-					 	case 'speed':
+						case 'speed':
 							this._speedNeuron = neurons[i];
 							neurons[i].frequency = 10;
 							break;
@@ -176,7 +177,7 @@ indice -> corresponding neuron
 
 		ready: function () {
 			this.angle = 0.5;
-	       		this.speed = 0;
+			this.speed = 0;
 			this.x = 0;
 			this.y = 0;
 			this._frameRequested = false;
@@ -200,14 +201,14 @@ indice -> corresponding neuron
 				that._angleNeuron.setAutoSend(false);
 				that.setHandle(0, 0);
 			});
-		      	d3.select(this.$.handle).call(dragBehavior);
-	      	},
+			d3.select(this.$.handle).call(dragBehavior);
+		},
 
 		setHandle: function (x, y) {
 			this.x = Math.min(Math.max(x, -100), 100);
 			this.y = Math.min(Math.max(y, -100), 100);
 			this._frameRequested = true;
-	   	},
+		},
 
 		redraw: function(){
 			var that = this;
@@ -236,7 +237,7 @@ indice -> corresponding neuron
 			if(this.noBackward && this.speed<0) this.speed = 0;
 
 			this.updateNeurons();
-	  },
+		},
 
 		computeCompassX: function(angle, scale) {
 			if(scale === undefined) scale = 1;
@@ -262,18 +263,18 @@ indice -> corresponding neuron
 		computeVisualCompassY: function(){ return this.computeCompassY(this.compass.visual, this.compass.forceVisual); },
 
 		updateDisplay: function () {
-		 	var that = this;
+			var that = this;
 			requestAnimationFrame(function () {
 				d3.select(that.$.handle).attr('transform', 'translate('+that.x+','+that.y+')');
-		       });
-	       },
+			});
+		},
 
 		updateNeurons: function () {
-		       if (this._speedNeuron.isConnected())
-			       this._speedNeuron.send(0, this.speed);
-		       if (this._angleNeuron.isConnected())
-			       this._angleNeuron.send(0, this.angle);
-	       },
+			if (this._speedNeuron.isConnected())
+				this._speedNeuron.send(0, this.speed);
+			if (this._angleNeuron.isConnected())
+				this._angleNeuron.send(0, this.angle);
+		},
 
 		updateCompass: function(evt) {
 			var neurons = evt.detail.values;
@@ -290,10 +291,10 @@ indice -> corresponding neuron
 		updateVisualCompass: function(evt) {
 			var neuronValues = evt.detail.values;
 			var radialFunc = d3.svg.area.radial()
-						.angle(function (d,i) { return 2*Math.PI / neuronValues.length * i })
-						.startAngle(0)
-						.radius(function(d) { return d*100 })
-						.interpolate("cardinal-closed");
+				.angle(function (d,i) { return 2*Math.PI / neuronValues.length * i })
+				.startAngle(0)
+				.radius(function(d) { return d*100 })
+				.interpolate("cardinal-closed");
 
 			var svgContainer = d3.select(this.$.map);
 			svgContainer.select("#visualcompass").attr("d", radialFunc(neuronValues))
@@ -301,7 +302,7 @@ indice -> corresponding neuron
 
 		updateState: function(){
 			this.state = (this._speedNeuron && this._speedNeuron.state === 'connected' &&
-			       	this._angleNeuron && this._angleNeuron.state === 'connected' &&
+				this._angleNeuron && this._angleNeuron.state === 'connected' &&
 				(!this._compassNeuron || this._compassNeuron.state === 'connected')) ? 'connected' : 'disconnected';
 		},
 
